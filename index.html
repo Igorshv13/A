@@ -50,6 +50,9 @@
     <!-- Canonical URL -->
     <link rel="canonical" href="https://igorshv13.github.io/A/">
 
+    <!-- Font Awesome (для иконок) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <!-- Schema.org enhanced -->
     <script type="application/ld+json">
     {
@@ -697,14 +700,14 @@
             color: var(--gray);
         }
 
-        /* Blog Section */
+        /* Blog Section with expandable articles */
         .blog {
             padding: 5rem 0;
         }
 
         .blog-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2rem;
             margin-top: 3rem;
         }
@@ -715,6 +718,8 @@
             overflow: hidden;
             box-shadow: var(--shadow);
             transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
         }
 
         .blog-card:hover {
@@ -723,7 +728,7 @@
         }
 
         .blog-image {
-            height: 180px;
+            height: 200px;
             overflow: hidden;
         }
 
@@ -731,34 +736,92 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .blog-card:hover .blog-image img {
+            transform: scale(1.05);
         }
 
         .blog-content {
             padding: 1.5rem;
+            flex: 1;
         }
 
         .blog-date {
             font-size: 0.85rem;
             color: var(--accent);
+            font-weight: 600;
             margin-bottom: 0.5rem;
         }
 
         .blog-content h3 {
-            margin-bottom: 0.75rem;
-            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            line-height: 1.4;
         }
 
-        .blog-content p {
+        .blog-content-preview p {
             color: var(--gray);
-            font-size: 0.9rem;
             margin-bottom: 1rem;
         }
 
-        .blog-link {
+        .blog-content-full {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, opacity 0.3s ease-out, margin 0.3s ease-out;
+            margin-top: 0;
+        }
+
+        .blog-content-full.show {
+            max-height: 1000px;
+            opacity: 1;
+            overflow: visible;
+            margin-top: 1rem;
+        }
+
+        .blog-content-full p {
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        .blog-content-full ul {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--gray);
+        }
+
+        .blog-content-full li {
+            margin-bottom: 0.25rem;
+        }
+
+        .read-more-btn {
+            background: none;
+            border: none;
             color: var(--accent);
-            text-decoration: none;
             font-weight: 600;
             font-size: 0.9rem;
+            cursor: pointer;
+            padding: 0.5rem 0;
+            text-align: left;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .read-more-btn:hover {
+            color: var(--accent-hover);
+        }
+
+        .read-more-btn i {
+            font-size: 0.8rem;
+            transition: transform 0.3s;
+        }
+
+        .read-more-btn.active i {
+            transform: rotate(180deg);
         }
 
         /* Promo Section */
@@ -1292,13 +1355,14 @@
         </div>
     </section>
 
-    <!-- Blog Section -->
+    <!-- Blog Section with Expandable Articles -->
     <section class="blog">
         <div class="container">
             <h2>Полезные статьи о кровле</h2>
             <p style="text-align: center; max-width: 600px; margin: 0 auto; color: var(--gray);">Делимся опытом и отвечаем на частые вопросы</p>
 
             <div class="blog-grid">
+                <!-- Статья 1 -->
                 <div class="blog-card">
                     <div class="blog-image">
                         <img src="https://raw.githubusercontent.com/Igorshv13/A/main/images/hero-roof.jpg" alt="Схема устройства кровли">
@@ -1306,11 +1370,33 @@
                     <div class="blog-content">
                         <div class="blog-date">15 марта 2025</div>
                         <h3>Схема устройства кровли частного дома: пирог, узлы, материалы</h3>
-                        <p>Разбираем все слои правильной кровли: пароизоляция, утеплитель, гидрозащита, вентзазор, кровельное покрытие.</p>
-                        <a href="#" class="blog-link">Читать далее →</a>
+                        
+                        <!-- Краткое описание (всегда видно) -->
+                        <div class="blog-content-preview">
+                            <p>Разбираем все слои правильной кровли: пароизоляция, утеплитель, гидрозащита, вентзазор, кровельное покрытие.</p>
+                        </div>
+                        
+                        <!-- Полный текст (скрыт изначально) -->
+                        <div class="blog-content-full" id="blog1-full">
+                            <p><strong>Правильный кровельный пирог</strong> — это основа долговечной крыши. Он состоит из нескольких обязательных слоев:</p>
+                            <ul>
+                                <li><strong>Пароизоляция</strong> — защищает утеплитель от влаги изнутри помещения. Крепится снизу стропил.</li>
+                                <li><strong>Утеплитель</strong> — минеральная вата или ПИР-плиты толщиной 200-300 мм. Укладывается между стропил.</li>
+                                <li><strong>Гидро-ветрозащита</strong> — защищает утеплитель от влаги снаружи и продувания.</li>
+                                <li><strong>Контробрешетка</strong> — создает вентиляционный зазор между гидрозащитой и кровельным покрытием.</li>
+                                <li><strong>Кровельное покрытие</strong> — металлочерепица, профнастил, мягкая черепица и т.д.</li>
+                            </ul>
+                            <p>Важно помнить про вентиляцию подкровельного пространства — она предотвращает образование конденсата и продлевает срок службы кровли.</p>
+                            <p>При заказе монтажа кровли наши специалисты бесплатно проконсультируют вас по выбору оптимального пирога для вашего дома.</p>
+                        </div>
+                        
+                        <button class="read-more-btn" onclick="toggleBlog(this, 'blog1-full')">
+                            <span>Читать далее</span> <i class="fas fa-chevron-down"></i>
+                        </button>
                     </div>
                 </div>
 
+                <!-- Статья 2 -->
                 <div class="blog-card">
                     <div class="blog-image">
                         <img src="https://raw.githubusercontent.com/Igorshv13/A/main/images/soft-roof.jpg" alt="Подкровельный конденсат">
@@ -1318,11 +1404,30 @@
                     <div class="blog-content">
                         <div class="blog-date">2 марта 2025</div>
                         <h3>Подкровельный конденсат и пароизоляция: причины и решения</h3>
-                        <p>Почему течет кровля, если покрытие целое? Рассказываем про точку росы, вентиляцию и правильную пароизоляцию.</p>
-                        <a href="#" class="blog-link">Читать далее →</a>
+                        
+                        <div class="blog-content-preview">
+                            <p>Почему течет кровля, если покрытие целое? Рассказываем про точку росы, вентиляцию и правильную пароизоляцию.</p>
+                        </div>
+                        
+                        <div class="blog-content-full" id="blog2-full">
+                            <p><strong>Конденсат под кровлей</strong> — частая проблема, которая приводит к гниению стропил, намоканию утеплителя и промерзанию крыши.</p>
+                            <p><strong>Основные причины:</strong></p>
+                            <ul>
+                                <li><strong>Отсутствие или повреждение пароизоляции</strong> — теплый влажный воздух из дома проникает в утеплитель и конденсируется там.</li>
+                                <li><strong>Недостаточная вентиляция</strong> — если нет вентзазора, влаге некуда выходить.</li>
+                                <li><strong>Ошибки в утеплении</strong> — неправильная толщина утеплителя или его отсутствие.</li>
+                            </ul>
+                            <p><strong>Как решить проблему:</strong> правильный монтаж пароизоляции с проклейкой стыков, создание вентзазора 50-60 мм, установка аэраторов для вывода влаги.</p>
+                            <p>Наши бригады всегда проверяют вентиляцию и пароизоляцию при монтаже — это гарантия долгой службы вашей кровли.</p>
+                        </div>
+                        
+                        <button class="read-more-btn" onclick="toggleBlog(this, 'blog2-full')">
+                            <span>Читать далее</span> <i class="fas fa-chevron-down"></i>
+                        </button>
                     </div>
                 </div>
 
+                <!-- Статья 3 -->
                 <div class="blog-card">
                     <div class="blog-image">
                         <img src="https://raw.githubusercontent.com/Igorshv13/A/main/images/gutters.jpg" alt="Снегозадержатели">
@@ -1330,8 +1435,26 @@
                     <div class="blog-content">
                         <div class="blog-date">20 февраля 2025</div>
                         <h3>Снегозадержатели и водостоки: защита кровли зимой</h3>
-                        <p>Обязательны ли снегозадержатели на металлочерепице? Как выбрать систему водостока, чтобы не замерзала.</p>
-                        <a href="#" class="blog-link">Читать далее →</a>
+                        
+                        <div class="blog-content-preview">
+                            <p>Обязательны ли снегозадержатели на металлочерепице? Как выбрать систему водостока, чтобы не замерзала.</p>
+                        </div>
+                        
+                        <div class="blog-content-full" id="blog3-full">
+                            <p><strong>Снегозадержатели</strong> — это не просто аксессуар, а элемент безопасности. Они предотвращают лавинообразный сход снега, защищают водостоки и людей.</p>
+                            <p><strong>Виды снегозадержателей:</strong></p>
+                            <ul>
+                                <li><strong>Трубчатые</strong> — самые надежные, подходят для любой кровли. Устанавливаются в 2-3 ряда.</li>
+                                <li><strong>Решетчатые</strong> — декоративные, но менее эффективные.</li>
+                                <li><strong>Уголки</strong> — только для мягкой кровли с малым уклоном.</li>
+                            </ul>
+                            <p><strong>Водосточные системы зимой</strong> — проблема обледенения решается установкой греющего кабеля в желобах и трубах. Это предотвращает образование сосулек и разрушение водостока.</p>
+                            <p>Мы предлагаем комплексные решения: монтаж водостоков + снегозадержатели + обогрев под ключ.</p>
+                        </div>
+                        
+                        <button class="read-more-btn" onclick="toggleBlog(this, 'blog3-full')">
+                            <span>Читать далее</span> <i class="fas fa-chevron-down"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1492,6 +1615,25 @@
             
             const total = area * basePrice * materialCoeff;
             document.getElementById('price').textContent = Math.round(total).toLocaleString() + ' ₽';
+        }
+
+        // Функция для раскрытия/сворачивания статей в блоге
+        function toggleBlog(button, contentId) {
+            const content = document.getElementById(contentId);
+            const buttonText = button.querySelector('span');
+            const icon = button.querySelector('i');
+            
+            if (content.classList.contains('show')) {
+                // Сворачиваем
+                content.classList.remove('show');
+                buttonText.textContent = 'Читать далее';
+                button.classList.remove('active');
+            } else {
+                // Раскрываем
+                content.classList.add('show');
+                buttonText.textContent = 'Свернуть';
+                button.classList.add('active');
+            }
         }
 
         // Обработка формы с Formspree
